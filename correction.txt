@@ -1,0 +1,142 @@
+// ---------- Classe mère ----------
+class ObjetGraphique {
+    private int x, y;   // coordonnées
+
+    // Constructeur par défaut
+    ObjetGraphique() {
+        this(0, 0);
+    }
+
+    // Constructeur avec paramètres
+    ObjetGraphique(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // Méthode pour modifier les coordonnées
+    void setXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    int getX() { return x; }
+    int getY() { return y; }
+
+    // Méthode d’affichage
+    void affiche() {
+        System.out.println("affiche un objet graphique");
+    }
+
+    // Méthode surface (sera redéfinie)
+    float surface() {
+        return 0;
+    }
+}
+// --------- fin ObjetGraphique ---------
+
+
+// ---------- Classe Rectangle ----------
+class Rectangle extends ObjetGraphique {
+    float largeur, longueur;
+
+    // Constructeur par défaut
+    Rectangle() {
+        this(3, 5);           // valeurs de l’exemple : largeur=3, longueur=5
+    }
+
+    // Constructeur avec paramètres
+    Rectangle(float la, float lo) {
+        super(2, 3);          // appel du constructeur de la classe mère
+        largeur  = la;
+        longueur = lo;
+    }
+
+    // Méthode d’allongement du rectangle
+    void allongerRect(float lg) {
+        longueur += lg;
+    }
+
+    // Redéfinition de surface()
+    @Override
+    float surface() {
+        return longueur * largeur;
+    }
+
+    // Redéfinition de affiche()
+    @Override
+    void affiche() {
+        super.affiche();      // affiche un objet graphique
+        System.out.println("affiche un rectangle");
+    }
+}
+// --------- fin Rectangle ---------
+
+
+// ---------- Classe Cercle ----------
+class Cercle extends ObjetGraphique {
+    float rayon;
+
+    // Constructeur par défaut
+    Cercle() {
+        this(2);              // rayon = 2 dans l’exemple
+    }
+
+    // Constructeur avec paramètre
+    Cercle(float r) {
+        super(1, 1);          // coordonnées quelconques
+        rayon = r;
+    }
+
+    // Redéfinition de surface()
+    @Override
+    float surface() {
+        return rayon * rayon * 3.14f;
+    }
+
+    // Redéfinition de affiche()
+    @Override
+    void affiche() {
+        super.affiche();
+        System.out.println("affiche un cercle");
+    }
+}
+// --------- fin Cercle ---------
+
+
+// ---------- Classe de test ----------
+import java.util.Scanner;
+
+public class Essai {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        ObjetGraphique d = null;
+
+        System.out.print("Choisissez (o : objet, r : rectangle, c : cercle) : ");
+        char c = sc.next().charAt(0);
+
+        switch (c) {      // c est introduit par le clavier
+            case 'o':
+                d = new ObjetGraphique();
+                break;
+            case 'r':
+                d = new Rectangle(3, 5);
+                break;
+            case 'c':
+                d = new Cercle(2);
+                break;
+            default:
+                System.out.println("Choix invalide !");
+                System.exit(0);
+        }
+
+        // Polymorphisme : la bonne méthode surface() est appelée
+        float s = d.surface();
+        System.out.println("Surface = " + s);
+
+        // Affichage du type d’objet
+        d.affiche();
+
+      
+    }
+}
